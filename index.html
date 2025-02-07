@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validation des manœuvres des étudiants</title>
+    <style>
+        /* Style global */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9; /* Fond légèrement gris */
+            display: flex;
+            justify-content: center; /* Centrer horizontalement */
+            align-items: center; /* Centrer verticalement */
+            height: 100vh; /* Hauteur totale de la fenêtre */
+        }
+        /* Conteneur principal */
+        .container {
+            text-align: center; /* Centrer le contenu */
+            background-color: #ffffff; /* Fond blanc */
+            padding: 30px 40px; /* Espacement interne */
+            border-radius: 12px; /* Coins arrondis */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce */
+            max-width: 400px; /* Largeur maximale */
+        }
+        /* Titre */
+        h1 {
+            font-size: 24px;
+            color: #333333; /* Texte sombre */
+            margin-bottom: 20px; /* Espace sous le titre */
+        }
+        /* Boutons */
+        button {
+            background-color: #4CAF50; /* Vert pour "Valider" */
+            color: white; /* Texte blanc */
+            border: none; /* Pas de bordure */
+            padding: 12px 24px; /* Taille des boutons */
+            font-size: 16px;
+            border-radius: 8px; /* Coins arrondis */
+            cursor: pointer; /* Curseur en main */
+            transition: background-color 0.3s ease; /* Animation fluide */
+            margin: 10px; /* Espace entre les boutons */
+        }
+        /* Hover pour les boutons */
+        button:hover {
+            opacity: 0.9; /* Légère réduction d'opacité */
+        }
+        /* Bouton "Annuler" */
+        .cancel-button {
+            background-color: #f44336; /* Rouge pour "Annuler" */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Restitution acceptée?</h1>
+        <button onclick="validateAction()">Valider</button>
+        <button onclick="cancelAction()" class="cancel-button">Annuler</button>
+    </div>
+    <script>
+        function sendRequest(status) {
+            fetch('/validate', { // URL relative (sans https://...)
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: status })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Réponse du serveur :", data);
+            })
+            .catch(error => {
+                console.error("Erreur lors de la requête :", error);
+            });
+        }
+
+        function validateAction() {
+            console.log("Bouton Valider cliqué");
+            sendRequest('validated');
+        }
+
+        function cancelAction() {
+            console.log("Bouton Annuler cliqué");
+            sendRequest('cancelled');
+        }
+    </script>
+</body>
+</html>
